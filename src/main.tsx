@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import "flowbite";
-import "flowbite/dist/flowbite.min.css";
 import './index.css'
+import "flowbite";
+// import "flowbite/dist/flowbite.min.css";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
