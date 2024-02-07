@@ -1,6 +1,7 @@
 import { useRef, useMemo, useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useAxiosContext } from 'contexts/AxiosContext';
+import { fromJson, toJson } from 'lib/json';
 
 type RequestMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
@@ -41,14 +42,14 @@ const useAxios = () => {
   }
 
   const fetchApiResponse = useCallback(
-    async <T,S = {}>(url: string, method: RequestMethod, payload?: S) => {
+    async <T,S = Record<string, never>>(url: string, method: RequestMethod, payload?: S) => {
       const { data } = await instance<T>({
         method,
         url,
-        data: payload
+        data: toJson(payload)
       })
 
-      return data;
+      return fromJson(data) as T;
     },
     [instance]
   )
