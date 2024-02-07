@@ -16,7 +16,7 @@ const Avatar = ({ currentUser }: {currentUser: UserType}) => {
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
           </svg>
         </button>
-        <div id="dropdownAvatarName" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <div id="dropdownAvatarName" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
               <div className="font-medium ">{currentUser.phone}</div>
               <div className="truncate">{currentUser.email}</div>
