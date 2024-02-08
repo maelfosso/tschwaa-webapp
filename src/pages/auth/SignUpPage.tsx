@@ -1,5 +1,5 @@
 import useAuth from "hooks/useAuth";
-import { SignUpInputs } from "models/type";
+import { SignUpInputs } from "models/auth";
 import { useState } from "react"
 import { Link } from "react-router-dom"
 

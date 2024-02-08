@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCurrentUserContext } from "../contexts/CurrentUserContext";
-import { SignInInputs, SignUpInputs, UserType } from "models/type";
+import { SignInInputs, SignUpInputs, UserType } from "models/auth";
 import { useNavigate } from "react-router-dom";
 import { TError, processError } from "./useAxios";
 import useApiAuth, { AUTH_USER } from "api/auth";

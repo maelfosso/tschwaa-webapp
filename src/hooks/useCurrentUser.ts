@@ -1,4 +1,4 @@
-import { UserType } from "models/type";
+import { UserType } from "models/auth";
 import { useEffect, useMemo, useState } from "react";
 import { TError } from "./useAxios";
 import useApiAuth, { AUTH_USER } from "api/auth";

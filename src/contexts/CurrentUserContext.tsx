@@ -1,7 +1,7 @@
 import Spinner from "components/common/Spinner";
 import { TError } from "hooks/useAxios";
 import useCurrentUser from "hooks/useCurrentUser";
-import { UserType } from "models/type";
+import { UserType } from "models/auth";
 import { createContext, useContext } from "react";
 
 interface CurrentUserContextType {

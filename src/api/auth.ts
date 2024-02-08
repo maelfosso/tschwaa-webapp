@@ -1,5 +1,5 @@
 import useAxios from "hooks/useAxios"
-import { SignInInputs, SignUpInputs, UserType } from "models/type";
+import { SignInInputs, SignUpInputs, UserType } from "models/auth";
 import { useCallback, useMemo } from "react";
 
 export const AUTH_USER = "user";

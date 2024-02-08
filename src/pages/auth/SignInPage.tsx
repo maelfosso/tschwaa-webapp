@@ -1,6 +1,6 @@
 import CommonAlert from "components/common/CommonAlert";
 import useAuth from "hooks/useAuth";
-import { SignInInputs } from "models/type";
+import { SignInInputs } from "models/auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 

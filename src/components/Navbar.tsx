@@ -1,6 +1,6 @@
 import { UserCircleIcon } from '@heroicons/react/20/solid';
 import { useCurrentUserContext } from 'contexts/CurrentUserContext';
-import { UserType } from 'models/type';
+import { UserType } from 'models/auth';
 import { Link } from 'react-router-dom';
 import WithFlowbite from './common/WithFlowbite';
 
