@@ -1,3 +1,7 @@
+export interface CreateOrganizationInputs {
+  name: string;
+  description: string;
+}
 
 export interface Organization {
   id: number;

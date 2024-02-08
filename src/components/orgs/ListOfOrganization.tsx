@@ -4,6 +4,7 @@ import Spinner from "components/common/Spinner";
 import WithFlowbite from "components/common/WithFlowbite";
 import { Organization } from "models/organizations";
 import { useNavigate } from "react-router-dom";
+import NewOrganization from "./NewOrganization";
 
 interface OrganizationItemProps {
   organization: Organization
@@ -76,12 +77,15 @@ const ListOfOrganizations = () => {
                       </form>
                   </div>
                   <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                      <button type="button" className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                          <svg className="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5"/>
-                          </svg>
-                          Add organization
-                      </button>
+                    <button type="button" className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" data-drawer-target="add-organization-drawer" data-drawer-show="add-organization-drawer" data-drawer-placement="right" aria-controls="add-organization-drawer">
+                        <svg className="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                        Add organization
+                    </button>
+                    <div id="add-organization-drawer" className="fixed top-0 right-0 z-40 h-screen overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-right-label">
+                      <NewOrganization />
+                    </div>
                   </div>
               </div>
               <div className="overflow-x-auto">

@@ -1,5 +1,5 @@
 import useAxios from "hooks/useAxios";
-import { Organization } from "models/organizations";
+import { CreateOrganizationInputs, Organization } from "models/organizations";
 import { useCallback, useMemo } from "react";
 
 export const ORGS = "orgs";
@@ -12,10 +12,10 @@ export default function useApiOrganizations() {
   //   [fetchApiResponse]
   // );
 
-  // const signUp = useCallback(
-  //   (inputs: SignUpInputs) => fetchApiResponse<UserType, SignUpInputs>(AUTH_SIGN_UP, "POST", inputs),
-  //   [fetchApiResponse]
-  // );
+  const createOrganization = useCallback(
+    (inputs: CreateOrganizationInputs) => fetchApiResponse<number, CreateOrganizationInputs>(ORGS, "POST", inputs),
+    [fetchApiResponse]
+  );
 
   const getListOfOrganizations = useCallback(
     () => fetchApiResponse<Organization[]>(ORGS, "GET"),
@@ -24,10 +24,12 @@ export default function useApiOrganizations() {
 
   return useMemo(
     () => ({
-      getListOfOrganizations
+      getListOfOrganizations,
+      createOrganization
     }),
     [
-      getListOfOrganizations
+      getListOfOrganizations,
+      createOrganization
     ]
   )
 }
