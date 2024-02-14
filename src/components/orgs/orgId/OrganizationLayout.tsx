@@ -29,24 +29,24 @@ const Layout = () => {
   return (
     <WithFlowbite>
     <nav className="bg-gray-50 dark:bg-gray-700">
-      <div className="max-w-screen-xl px-4 py-3 mx-auto">
+      <div className="px-4 lg:px-6 py-2.5">
         <div className="flex items-center">
-          <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
+          <ul className="flex flex-row items-center font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
             <li>
-              <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">{ organization?.name.toUpperCase() }</a>
+              <a href="#" className="text-gray-900 text-2xl dark:text-white hover:underline" aria-current="page">{ organization?.name.toUpperCase() }</a>
             </li>
             <li>
               <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
             </li>
             <li>
-              <a href="#" className="text-gray-900 dark:text-white hover:underline">Company</a>
+              <a href="#" className="text-gray-900 dark:text-white hover:underline">Members</a>
             </li>
-            <li>
+            {/* <li>
               <a href="#" className="text-gray-900 dark:text-white hover:underline">Team</a>
             </li>
             <li>
               <a href="#" className="text-gray-900 dark:text-white hover:underline">Features</a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

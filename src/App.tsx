@@ -67,7 +67,13 @@ function App() {
                 {
                   path: ":orgId",
                   element: <OrganizationLayout />,
-                  loader: OrganizationLoader(queryClient)
+                  loader: OrganizationLoader(queryClient),
+                  // children: [
+                  //   {
+                  //     index: true,
+                  //     element: 
+                  //   }
+                  // ]
                 }
               ]
             }
