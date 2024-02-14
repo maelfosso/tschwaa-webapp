@@ -1,35 +1,23 @@
-import useAxios from "hooks/useAxios";
 import { CreateOrganizationInputs, Organization } from "models/organizations";
-import { useCallback, useMemo } from "react";
+import { fetchApiResponse } from "./axios";
+import { QueryObserverOptions, UseMutationOptions } from "@tanstack/react-query";
 
 export const ORGS = "orgs";
 
-export default function useApiOrganizations() {
-  const { fetchApiResponse } = useAxios();
+export const getOrganizationQuery = (id: number, options = {}) => ({
+  queryKey: [ORGS, id],
+  queryFn: async () => fetchApiResponse<Organization>(`${ORGS}/${id}`, "GET"),
+  ...options,
+});
 
-  // const getListOfOrganizations = useCallback(
-  //   (inputs: SignInInputs) => fetchApiResponse<UserType, SignInInputs>(AUTH_SIGN_IN, "POST", inputs),
-  //   [fetchApiResponse]
-  // );
+export const getAllOrganizationsQuery = (options: QueryObserverOptions<Organization[], Error, void> = {}) => ({
+  queryKey: [ORGS],
+  queryFn: async () => fetchApiResponse<Organization[]>(ORGS, "GET"),
+  ...options
+});
 
-  const createOrganization = useCallback(
-    (inputs: CreateOrganizationInputs) => fetchApiResponse<number, CreateOrganizationInputs>(ORGS, "POST", inputs),
-    [fetchApiResponse]
-  );
-
-  const getListOfOrganizations = useCallback(
-    () => fetchApiResponse<Organization[]>(ORGS, "GET"),
-    [fetchApiResponse]
-  )
-
-  return useMemo(
-    () => ({
-      getListOfOrganizations,
-      createOrganization
-    }),
-    [
-      getListOfOrganizations,
-      createOrganization
-    ]
-  )
-}
+export const createOrganizationMutation = (options: UseMutationOptions<number, Error, CreateOrganizationInputs>) => ({
+  mutationKey: [ORGS, "create"],
+  mutationFn: (inputs: CreateOrganizationInputs) => fetchApiResponse<number, CreateOrganizationInputs>(ORGS, "POST", inputs),
+  ...options
+});

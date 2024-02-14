@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import useApiOrganizations, { ORGS } from "api/organizations";
+import { getAllOrganizationsQuery } from "api/organizations";
 import Spinner from "components/common/Spinner";
 import WithFlowbite from "components/common/WithFlowbite";
 import { Organization } from "models/organizations";
@@ -43,11 +43,8 @@ const OrganizationItem = ({ organization, onClick }: OrganizationItemProps) => {
 
 const ListOfOrganizations = () => {
   const navigate = useNavigate();
-  const { getListOfOrganizations } = useApiOrganizations();
-  const {data: organizations, isPending} = useQuery({
-    queryKey: [ORGS],
-    queryFn: getListOfOrganizations
-  })
+
+  const { data: organizations, isPending} = useQuery(getAllOrganizationsQuery())
 
   const handleOrganizationClick = (e: React.MouseEvent<HTMLTableCellElement>, id: number) => {
     e.preventDefault();

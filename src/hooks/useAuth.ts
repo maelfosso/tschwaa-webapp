@@ -2,21 +2,19 @@ import { useEffect, useState } from "react";
 import { useCurrentUserContext } from "../contexts/CurrentUserContext";
 import { SignInInputs, SignUpInputs, UserType } from "models/auth";
 import { useNavigate } from "react-router-dom";
-import { TError, processError } from "./useAxios";
-import useApiAuth, { AUTH_USER } from "api/auth";
+import { processError } from "api/axios";
+import { getCurrentUserQuery, signInMutation, signUpMutation } from "api/auth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export default function useAuth() {
   const navigate = useNavigate();
   const { setCurrentUser } = useCurrentUserContext();
   const [error, setError] = useState<string>("");
-  const { signIn: _signIn, signUp: _signUp, getCurrentUser } = useApiAuth()
 
-  const {data: currentUser, error: errorOnCurrentUser, refetch: refetchCurrentUser }  = useQuery<UserType, TError>({
-    queryKey: [AUTH_USER],
-    queryFn: getCurrentUser,
-    enabled: false,
-  })
+  const {data: currentUser, error: errorOnCurrentUser, refetch: refetchCurrentUser } =
+    useQuery(getCurrentUserQuery({
+      enabled: false
+    }));
 
   useEffect(() => {
     if (currentUser) {
@@ -27,12 +25,11 @@ export default function useAuth() {
 
   useEffect(() => {
     if (errorOnCurrentUser) {
-      setError(errorOnCurrentUser.error)
+      setError(errorOnCurrentUser.message)
     }
   }, [errorOnCurrentUser])
 
-  const { mutate: mutateSignIn } = useMutation({
-    mutationFn: _signIn,
+  const { mutate: mutateSignIn } = useMutation(signInMutation({
     onSuccess: (data: UserType) => {
       console.log("sign-in success: ", data);
       setCurrentUserContext();
@@ -41,10 +38,9 @@ export default function useAuth() {
       console.log("sign-in error: ", processError(error));
       setError(processError(error).error)
     }
-  });
+  }));
 
-  const { mutate: mutateSignUp } = useMutation({
-    mutationFn: _signUp,
+  const { mutate: mutateSignUp } = useMutation(signUpMutation({
     onSuccess: (data: UserType) => {
       console.log("sign-up success: ", data);
       setCurrentUserContext();
@@ -53,7 +49,7 @@ export default function useAuth() {
       console.log("sign-up error: ", processError(error));
       setError(processError(error).error)
     }
-  });
+  }));
 
   const setCurrentUserContext = async () => {
     refetchCurrentUser();

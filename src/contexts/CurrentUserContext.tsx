@@ -1,5 +1,4 @@
 import Spinner from "components/common/Spinner";
-import { TError } from "hooks/useAxios";
 import useCurrentUser from "hooks/useCurrentUser";
 import { UserType } from "models/auth";
 import { createContext, useContext } from "react";
@@ -7,7 +6,7 @@ import { createContext, useContext } from "react";
 interface CurrentUserContextType {
   currentUser?: UserType | null;
   isPendingCurrentUser: boolean;
-  error: TError | null;
+  error: Error | null;
   isError: boolean;
   setCurrentUser: (user: UserType) => void;
 }

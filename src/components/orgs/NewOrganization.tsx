@@ -1,20 +1,17 @@
 import { useState } from "react";
-import { CreateOrganizationInputs, Organization } from "models/organizations";
+import { CreateOrganizationInputs } from "models/organizations";
 import { useMutation } from "@tanstack/react-query";
-import useApiOrganizations from "api/organizations";
+import { createOrganizationMutation } from "api/organizations";
 import { useNavigate } from "react-router-dom";
-import { processError } from "hooks/useAxios";
+import { processError } from "api/axios";
 
 const NewOrganization = () => {
-  const { createOrganization } = useApiOrganizations();
   const navigate = useNavigate();
   const [org, setOrg] = useState<CreateOrganizationInputs>({
     name: '',
     description: ''
   });
-
-  const { mutate: mutateCreateOrganization } = useMutation({
-    mutationFn: createOrganization,
+  const { mutate: mutateCreateOrganization } = useMutation(createOrganizationMutation({
     onSuccess: (id: number) => {
       console.log("create success: ", id);
       navigate(`/orgs/${id}`);
@@ -23,7 +20,7 @@ const NewOrganization = () => {
       console.log("create organization error: ", processError(error));
       // setError(processError(error).error)
     }
-  });
+  }))
 
   const handleCreateOrganizationSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
