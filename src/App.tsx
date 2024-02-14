@@ -11,15 +11,26 @@ import AuthPage from 'pages/auth';
 import SignUpPage from 'pages/auth/SignUpPage';
 import ListOfOrganizationsPage from 'pages/orgs/ListOfOrganizationsPage';
 import PrivateRoute from 'components/common/PrivateRoute';
-import OrganizationLayout, {Loader as OrganizationLoader} from 'components/orgs/orgId/OrganizationLayout';
+import OrganizationLayout, { OrganizationLoader } from 'components/orgs/orgId/OrganizationLayout';
 import AppLayout from 'components/AppLayout';
+import { QueryClient } from '@tanstack/react-query';
 
 
 function App() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: 0,
+      },
+      mutations: {}
+    }
+  });
+
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <AppLayout />,
+      element: <AppLayout queryClient={queryClient}/>,
       children: [
         {
           index: true,
@@ -56,7 +67,7 @@ function App() {
                 {
                   path: ":orgId",
                   element: <OrganizationLayout />,
-                  loader: OrganizationLoader
+                  loader: OrganizationLoader(queryClient)
                 }
               ]
             }
@@ -67,36 +78,6 @@ function App() {
   ])
 
   return <RouterProvider router={routes} />
-  // return (
-  //   <>
-  //   <BrowserRouter>
-  //     <AxiosInstanceProvider config={{ baseURL: process.env.BACKEND_URL || "http://localhost:8080/" }}>
-  //       <QueryClientProvider client={queryClient}>
-  //         <CurrentUserContextProvider>
-  //           <Routes>
-  //             <Route path='/' element={<AppLayout />}>
-  //               <Route index element={<LandingPage />} />
-  //               <Route path='auth' element={<AuthPage />}>
-  //                 <Route path='sign-in' element={<SignInPage />} />
-  //                 <Route path='sign-up' element={<SignUpPage />} />
-  //                 <Route index element={<Navigate to="sign-in" replace />} />
-  //               </Route>
-  //               <Route element={<PrivateRoute />}>
-  //                 <Route path='orgs'>
-  //                   <Route index element={<ListOfOrganizationsPage />} />
-  //                   <Route path=':orgId' element={<OrganizationLayout />} loader={OrganizationLoader}>
-                      
-  //                   </Route>
-  //                 </Route>
-  //               </Route>
-  //             </Route>
-  //           </Routes>
-  //         </CurrentUserContextProvider>
-  //       </QueryClientProvider>
-  //     </AxiosInstanceProvider>
-  //   </BrowserRouter>
-  //   </>
-  // );
 }
 
 export default App;
