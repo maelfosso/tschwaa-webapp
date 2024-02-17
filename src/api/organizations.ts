@@ -1,12 +1,13 @@
-import { CreateOrganizationInputs, Organization } from "models/organizations";
+import { Organization } from "models/organizations";
 import { fetchApiResponse } from "./axios";
 import { QueryObserverOptions, UseMutationOptions } from "@tanstack/react-query";
+import { CreateOrganizationInputs, GetOrganizationResponse } from "./models/type";
 
 export const ORGS = "orgs";
 
 export const getOrganizationQuery = (id: number, options = {}) => ({
   queryKey: [ORGS, id],
-  queryFn: async () => fetchApiResponse<Organization>(`${ORGS}/${id}`, "GET"),
+  queryFn: async () => fetchApiResponse<GetOrganizationResponse>(`${ORGS}/${id}`, "GET"),
   ...options,
 });
 

@@ -48,7 +48,6 @@ const redirectToSignIn = () => {
 
 api.interceptors.response.use(
   (response) => {
-    console.log('on response', response);
     return response;
   },
   (error) => {
