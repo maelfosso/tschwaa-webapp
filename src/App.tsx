@@ -14,6 +14,8 @@ import PrivateRoute from 'components/common/PrivateRoute';
 import OrganizationLayout, { OrganizationLoader } from 'components/orgs/orgId/OrganizationLayout';
 import AppLayout from 'components/AppLayout';
 import { QueryClient } from '@tanstack/react-query';
+import OrganizationDetailsPage from 'pages/orgs/OrganizationDetailsPage';
+import NoSessionInProgress from 'pages/orgs/sessions/NoSessionInProgress';
 
 
 function App() {
@@ -68,12 +70,42 @@ function App() {
                   path: ":orgId",
                   element: <OrganizationLayout />,
                   loader: OrganizationLoader(queryClient),
-                  // children: [
-                  //   {
-                  //     index: true,
-                  //     element: 
-                  //   }
-                  // ]
+                  children: [
+                    {
+                      index: true,
+                      element: <OrganizationDetailsPage />
+                    },
+                    // {
+                    //   path: "home",
+                    //   element: <OrganizationHomePage />
+                    // },
+                    // {
+                    //   path: "members",
+                    //   element: <OrganizationMembers />
+                    // },
+                    {
+                      path: "sessions",
+                      children: [
+                        // {
+                        //   index: true,
+                        //   element: <OrganizationSessions />
+                        // },
+                        {
+                          path: "no-session-in-progress",
+                          element: <NoSessionInProgress />
+                        },
+                        // {
+                        //   path: "setup",
+                        //   element: <SetupNewSession />
+                        // },
+                        // {
+                        //   path: ":sessionId",
+                        //   element: <SessionIdLayout />,
+                        //   children: []
+                        // }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
