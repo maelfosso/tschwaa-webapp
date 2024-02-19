@@ -9,3 +9,9 @@ export type GetOrganizationResponse = {
   organization: Organization;
   currentSession: Session;
 }
+
+export type CreateSessionInputs = {
+  orgId: number;
+  startDate: string;
+  endDate: string;
+}

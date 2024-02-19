@@ -100,12 +100,16 @@ function App() {
                         //   index: true,
                         //   element: <OrganizationSessions />
                         // },
-                        
-                        // {
-                        //   path: ":sessionId",
-                        //   element: <SessionIdLayout />,
-                        //   children: []
-                        // }
+                        {
+                          path: ":sessionId",
+                          // element: <SessionIdLayout />,
+                          children: [
+                            {
+                              path: "setup",
+                              element: <SetupNewSession />
+                            },
+                          ]
+                        }
                       ]
                     }
                   ]

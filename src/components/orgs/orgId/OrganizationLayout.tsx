@@ -1,10 +1,8 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { getOrganizationQuery } from "api/organizations";
 import WithFlowbite from "components/common/WithFlowbite";
-import { Modal } from "flowbite";
 import { Organization } from "models/organizations";
-import { useEffect, useMemo } from "react";
-import { Navigate, Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 
 interface ParamsProps {
   params: {
@@ -51,7 +49,7 @@ const Layout = () => {
             </div>
           </div>
         </nav>
-        <div className="grow flex flex-col">
+        <div className="px-4 lg:px-6 py-2.5 grow flex flex-col">
           <Outlet />
         </div>
       </>

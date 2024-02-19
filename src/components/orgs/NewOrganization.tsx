@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { CreateOrganizationInputs } from "models/organizations";
 import { useMutation } from "@tanstack/react-query";
 import { createOrganizationMutation } from "api/organizations";
 import { useNavigate } from "react-router-dom";
 import { processError } from "api/axios";
+import { CreateOrganizationInputs } from "api/models/type";
 
 const NewOrganization = () => {
   const navigate = useNavigate();

@@ -1,10 +1,6 @@
 import objectTransformer from 'object-key-transformer';
 import { camelCase, snakeCase } from 'lodash';
 
-export function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function toJson(json: any) {
   if (Array.isArray(json)) {
