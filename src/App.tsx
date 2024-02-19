@@ -17,6 +17,7 @@ import { QueryClient } from '@tanstack/react-query';
 import OrganizationDetailsPage from 'pages/orgs/OrganizationDetailsPage';
 import NoSessionInProgress from 'pages/orgs/sessions/NoSessionInProgress';
 import SetupNewSession from 'pages/orgs/sessions/SetupNewSession';
+import CreateNewSession from 'pages/orgs/sessions/CreateNewSession';
 
 
 function App() {
@@ -89,8 +90,8 @@ function App() {
                       element: <NoSessionInProgress />
                     },
                     {
-                      path: "setup-new-session",
-                      element: <SetupNewSession />
+                      path: "create-new-session",
+                      element: <CreateNewSession />
                     },
                     {
                       path: "sessions",
