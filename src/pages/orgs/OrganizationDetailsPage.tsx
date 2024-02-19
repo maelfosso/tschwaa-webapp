@@ -11,7 +11,7 @@ const OrganizationDetailsPage = () => {
 
 
   if (!currentSession) {
-    return <Navigate to={"sessions/no-session-in-progress"} />
+    return <Navigate to={"no-session-in-progress"} />
   }
 
   return (

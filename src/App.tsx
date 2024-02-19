@@ -16,6 +16,7 @@ import AppLayout from 'components/AppLayout';
 import { QueryClient } from '@tanstack/react-query';
 import OrganizationDetailsPage from 'pages/orgs/OrganizationDetailsPage';
 import NoSessionInProgress from 'pages/orgs/sessions/NoSessionInProgress';
+import SetupNewSession from 'pages/orgs/sessions/SetupNewSession';
 
 
 function App() {
@@ -84,20 +85,21 @@ function App() {
                     //   element: <OrganizationMembers />
                     // },
                     {
+                      path: "no-session-in-progress",
+                      element: <NoSessionInProgress />
+                    },
+                    {
+                      path: "setup-new-session",
+                      element: <SetupNewSession />
+                    },
+                    {
                       path: "sessions",
                       children: [
                         // {
                         //   index: true,
                         //   element: <OrganizationSessions />
                         // },
-                        {
-                          path: "no-session-in-progress",
-                          element: <NoSessionInProgress />
-                        },
-                        // {
-                        //   path: "setup",
-                        //   element: <SetupNewSession />
-                        // },
+                        
                         // {
                         //   path: ":sessionId",
                         //   element: <SessionIdLayout />,
