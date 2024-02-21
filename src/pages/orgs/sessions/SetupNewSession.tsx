@@ -57,12 +57,12 @@ const SetupNewSession = () => {
         return <MembersSelection orgId={orgId} sessionId={sessionId} />
       case 2:
         return <MeetingPoints orgId={orgId} />
-      case 3:
-        return <MeetingFrequencies orgId={+(orgId ?? "")} />
-      case 4:
-        return <CashInConfiguration orgId={+(orgId ?? "")} />
-      case 5:
-        return <CashOutConfiguration orgId={+(orgId ?? "")} />
+      // case 3:
+      //   return <MeetingFrequencies orgId={+(orgId ?? "")} />
+      // case 4:
+      //   return <CashInConfiguration orgId={+(orgId ?? "")} />
+      // case 5:
+      //   return <CashOutConfiguration orgId={+(orgId ?? "")} />
       default:
         <></>
     }
