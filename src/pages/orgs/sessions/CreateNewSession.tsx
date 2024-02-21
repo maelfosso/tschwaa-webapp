@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { processError } from "api/axios";
 import { createSessionMutation } from "api/session";
-import YearCalendar from "components/orgs/orgId/sessions/DateRangeSelection";
+import YearCalendar from "components/orgs/orgId/sessions/setup/DateRangeSelection";
 import { Session } from "models/organizations";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
