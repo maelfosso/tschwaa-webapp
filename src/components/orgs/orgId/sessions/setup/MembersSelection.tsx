@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { addMemberToSession, getMembersOfSession, removeMembersFromSession, updateAllMembersOfSession } from "api/session";
 import { MemberOfSession } from "models/organizations";
@@ -7,10 +7,7 @@ import { classNames } from "lib/utils";
 import InviteMembers from "components/orgs/InviteMembers";
 import { Drawer } from "flowbite";
 
-const MembersSelection = () => {
-  const { orgId: _orgId, sessionId: _sessionId } = useParams();
-  const orgId = +(_orgId ?? "");
-  const sessionId = +(_sessionId ?? "");
+const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: number }) => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
