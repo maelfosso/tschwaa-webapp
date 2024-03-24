@@ -23,7 +23,6 @@ const SignUpPage = () => {
     //   await signUp(inputs);
     //   router.replace(AUTH_SIGN_IN);
     // } catch (error) {
-    //   console.log('on submit : ', error);
     //   setShowError(true);
     //   setSubmissionError(getErrorMessage(error))
     // }

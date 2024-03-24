@@ -31,22 +31,18 @@ export default function useAuth() {
 
   const { mutate: mutateSignIn } = useMutation(signInMutation({
     onSuccess: (data: UserType) => {
-      console.log("sign-in success: ", data);
       setCurrentUserContext();
     },
     onError: (error: Error) => {
-      console.log("sign-in error: ", processError(error));
       setError(processError(error).error)
     }
   }));
 
   const { mutate: mutateSignUp } = useMutation(signUpMutation({
     onSuccess: (data: UserType) => {
-      console.log("sign-up success: ", data);
       setCurrentUserContext();
     },
     onError: (error: Error) => {
-      console.log("sign-up error: ", processError(error));
       setError(processError(error).error)
     }
   }));
