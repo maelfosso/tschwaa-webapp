@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { processError } from "api/axios";
 import { createSessionMutation } from "api/session";
+import CommonAlert, { CommonAlertDanger } from "components/common/CommonAlert";
 import YearCalendar from "components/orgs/orgId/sessions/setup/DateRangeSelection";
 import { Session } from "models/organizations";
 import { useState } from "react";
@@ -33,17 +34,9 @@ const CreateNewSession = () => {
   const handleCreateClick = async () => {
     try {
       if (isValid()) {
-        // const createdSession = await createNewSession(
-        //   organizationId,
-        //   startDate,
-        //   endDate,
-        //   authSession?.accessToken!,
-        // );
-
-        // router.replace(`orgs/${organizationId}/sessions/${createdSession.id}/setup`)
         mutateCreateSession({orgId: +orgId!, startDate, endDate })
       } else {
-        setError("error");
+        setError("Missing start or end date. Kindly, select the dates.");
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -58,7 +51,7 @@ const CreateNewSession = () => {
   }
 
   const handleCancelClick = () => {
-    // router.replace('/orgs');
+    navigate(`/orgs/${orgId}`);
   }
 
   return (
@@ -70,6 +63,9 @@ const CreateNewSession = () => {
         <p className="mt-3 max-w-2xl text-base leading-6 text-gray-600">
           Kindly select, using the calendar, the <strong>start and end date</strong> of the session
         </p>
+        {
+          error && <CommonAlertDanger description={error} />
+        }
         <YearCalendar
           startDateValue={startDate}
           onStartDateChange={(d: string) => setStartDate(d)}
