@@ -72,14 +72,11 @@ export const fetchApiResponse = async <T,S = Record<string, never>>(url: string,
 export const processError = (error: Error) => {
   if (error instanceof AxiosError) {
     if (error.response) {
-      console.log("fetch api response - error 1:", error.response.data);
       return new TError(error.response.data as string)
     } else if (error.request) {
-      console.log("fetch api response - error 2:", error.request);
       return new TError(error.request)
     } else {
       // Something happened in setting up the request that triggered an Error
-      console.log("fetch api response - error 1:", error.message);
       return new TError(error.message)
     }
   } else {

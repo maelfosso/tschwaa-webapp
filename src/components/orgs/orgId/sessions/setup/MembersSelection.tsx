@@ -68,7 +68,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
 
   const { mutate: mutateUpdateAllMembersOfSession } = useMutation(updateAllMembersOfSession(orgId, sessionId, {
     onSuccess: (response: MemberOfSession[]) => {
-      console.log("update members success: ", response);
       const nextMembers = [...members].map((member) => {
         const found = response.find(
           m => m.membershipId === member.membershipId
@@ -97,7 +96,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
 
   const { mutate: mutateAddMemberToSession } = useMutation(addMemberToSession(orgId, sessionId, {
     onSuccess: (response: number) => {
-      console.log("add members success: ", response);
       if (!currentMember) {
         return;
       }
@@ -120,7 +118,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
 
   const { mutate: mutateRemoveMemberFromSession } = useMutation(removeMembersFromSession(orgId, sessionId, {
     onSuccess: (response: MemberOfSession[]) => {
-      console.log("remove members success: ", response);
       if (!currentMember) {
         return;
       }
@@ -141,7 +138,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
   }))
 
   const handleToggleAll = async () => {
-    console.log('toggleAll', checked, indeterminate);
     // TODO: replace the toggle all checkbox by a loading spinner : we sent the request
 
     const concernedMembers = checked || indeterminate ? [] : members
@@ -203,7 +199,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
     mutateRemoveMemberFromSession({
       membershipId: currentMember.id
     })
-    // console.log('handleRemoveMemberFromSession: ', member.id, response);
     // if (response) {
     //   const nextMembers = [...members];
     //   let selectedMember = nextMembers.find(
@@ -222,8 +217,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
   }
 
   const handleToggleMember = (checked: boolean, member: MemberOfSession) => {
-    console.log('toggleMember: ', checked, member);
-
     setCurrentMember(member);
     if (checked) {
       handleAddMemberToSession(member);
@@ -233,7 +226,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
   }
 
   const handleInviteMembersClick = () => {
-    console.log('handle add invite click');
     inviteMembersDrawer.show();
   }
 
@@ -249,6 +241,7 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <button
             type="button"
+            data-modal-target="invite-members-drawer"
             className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={() => handleInviteMembersClick()}
           >

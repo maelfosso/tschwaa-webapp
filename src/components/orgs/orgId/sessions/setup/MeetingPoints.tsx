@@ -19,7 +19,7 @@ const MeetingPoints = ({ orgId }: Props) => {
     // event.preventDefault();
     setMeetingPoint(meetingPoints[+event.target.value]);
   }
-console.log(meetingPoint.name);
+
   return (
     <>
       <div className="mb-8 pt-3 sm:flex sm:items-center">

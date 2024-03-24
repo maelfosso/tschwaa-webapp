@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { processError } from "api/axios";
 import { createSessionMutation } from "api/session";
-import CommonAlert, { CommonAlertDanger } from "components/common/CommonAlert";
+import { CommonAlertDanger } from "components/common/CommonAlert";
 import YearCalendar from "components/orgs/orgId/sessions/setup/DateRangeSelection";
 import { Session } from "models/organizations";
 import { useState } from "react";
@@ -17,17 +17,14 @@ const CreateNewSession = () => {
 
   const { mutate: mutateCreateSession } = useMutation(createSessionMutation({
     onSuccess: (session: Session) => {
-      console.log("create session success: ", session.id);
       navigate(`/orgs/${orgId}/sessions/${session.id}/setup`);
     },
     onError: (error: Error) => {
-      console.log("create organization error: ", processError(error));
-      // setError(processError(error).error)
+      setError(processError(error).error)
     }
   }))
 
   const isValid = () => {
-    console.log('is-valid ', startDate && endDate);
     return startDate && endDate;
   }
 

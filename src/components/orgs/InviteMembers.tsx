@@ -29,7 +29,6 @@ const InviteMembers = ({ orgId }: { orgId: number }) => {
 
   const { mutate: mutateSendInvitation } = useMutation(sendMultipleWhatsappInvitation(orgId, false, {
     onSuccess: (data: SendMultipleWhatsappInvitationResponse) => {
-      console.log("sendMultipleWhatsappInvitation success: ", data);
 
     setPhoneNumberInvited(data);
     },
@@ -40,7 +39,7 @@ const InviteMembers = ({ orgId }: { orgId: number }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('handle invite submit');
+
     const membersToInvite = phones.map((phone:string) => {
       return {
         id: 0,
@@ -51,7 +50,6 @@ const InviteMembers = ({ orgId }: { orgId: number }) => {
         email: ""
       } as Member
     })
-    console.log(membersToInvite);
     // const result = await sendMultipleWhatsappInvitation(
     //   organizationId,
     //   membersToInvite,
@@ -60,7 +58,6 @@ const InviteMembers = ({ orgId }: { orgId: number }) => {
     mutateSendInvitation({
       members: membersToInvite
     })
-    // console.log('result invitation', fromJson(result));
     // setPhoneNumberInvited(result);
   }
 
@@ -78,7 +75,7 @@ const InviteMembers = ({ orgId }: { orgId: number }) => {
 
   const handleAddPhoneNumberClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log('handle add phone number');
+
     setPhoneNumbers([...phones, currentPhoneNumber]);
     setCurrentPhoneNumber('');
   }

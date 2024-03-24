@@ -117,7 +117,7 @@ const YearCalendar = ({ startDateValue, endDateValue, onStartDateChange, onEndDa
 
   useEffect(() => {
     let newMonths = [...months];
-    console.log("dates", startDateValue, endDateValue);
+
     if (startDateValue) {
       newMonths = selectDay(startDateValue, newMonths);
     } else {

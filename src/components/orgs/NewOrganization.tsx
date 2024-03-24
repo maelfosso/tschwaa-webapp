@@ -13,7 +13,6 @@ const NewOrganization = () => {
   });
   const { mutate: mutateCreateOrganization } = useMutation(createOrganizationMutation({
     onSuccess: (id: number) => {
-      console.log("create success: ", id);
       navigate(`/orgs/${id}`);
     },
     onError: (error: Error) => {
@@ -24,7 +23,7 @@ const NewOrganization = () => {
 
   const handleCreateOrganizationSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('to create', org);
+
     mutateCreateOrganization(org);
   }
 

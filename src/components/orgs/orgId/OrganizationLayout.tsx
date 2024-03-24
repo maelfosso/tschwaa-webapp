@@ -27,7 +27,6 @@ const Layout = () => {
   const { data: response } = useQuery(getOrganizationQuery(params.orgId))
   const organization = response?.organization;
   const currentSession = response?.currentSession;
-  console.log('current-session', currentSession);
 
   return (
     <WithFlowbite>

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { XCircleIcon } from '@heroicons/react/20/solid'
 import WithFlowbite from './WithFlowbite';
 
