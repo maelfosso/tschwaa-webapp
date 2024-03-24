@@ -6,9 +6,7 @@ import { CreateOrganizationInputs, GetOrganizationResponse } from "./models/type
 export const ORGS = "orgs";
 export const MEMBERS = "members"
 
-export type SendMultipleWhatsappInvitationInputs = {
-  members: Member[]
-}
+export type SendMultipleWhatsappInvitationInputs = Member[];
 export type SendMultipleWhatsappInvitationResponse = {
   phone: string;
   invited: boolean;

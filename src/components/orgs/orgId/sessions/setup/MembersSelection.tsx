@@ -6,6 +6,7 @@ import { MemberOfSession } from "models/organizations";
 import { classNames } from "lib/utils";
 import InviteMembers from "components/orgs/InviteMembers";
 import { Drawer } from "flowbite";
+import WithFlowbite from "components/common/WithFlowbite";
 
 const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: number }) => {
 
@@ -18,35 +19,6 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
   const [members, setMembers] = useState<MemberOfSession[]>([]);
   const [currentMember, setCurrentMember] = useState<MemberOfSession>()
   const [selectedMembers, setSelectedMembers] = useState<MemberOfSession[]>([])
-
-  const $inviteMembersEl = document.getElementById('invite-members-drawer');
-  const inviteMembersOptions = {
-    // placement: 'right',
-    // backdrop: true,
-    // bodyScrolling: false,
-    // edge: false,
-    // edgeOffset: '',
-    // backdropClasses:
-    //     'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30',
-    onHide: () => {
-      console.log('drawer is hidden');
-      navigate({
-        pathname,
-        search: `step=2`
-      })
-    },
-    onShow: () => {
-      console.log('drawer is shown');
-    },
-    onToggle: () => {
-      console.log('drawer has been toggled');
-    },
-  };
-  const instanceOptions = {
-    id: 'invite-members-drawer',
-    override: true
-  };
-  const inviteMembersDrawer = new Drawer($inviteMembersEl, inviteMembersOptions, instanceOptions);
 
   useEffect(() => {
     setSelectedMembers(members.filter(d => d.id && d.sessionId)); // select only those having MoS information
@@ -225,12 +197,9 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
     }
   }
 
-  const handleInviteMembersClick = () => {
-    inviteMembersDrawer.show();
-  }
-
   return (
-    <>
+    <WithFlowbite>
+      <>
       <div className="mb-8 pt-3 sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h2 className="text-lg font-semibold leading-6 text-gray-900">Members</h2>
@@ -241,9 +210,10 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <button
             type="button"
-            data-modal-target="invite-members-drawer"
+            data-drawer-target="invite-members-drawer"
+            data-drawer-show="invite-members-drawer"
+            data-drawer-placement="right"
             className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={() => handleInviteMembersClick()}
           >
             Invite members
           </button>
@@ -315,11 +285,14 @@ const MembersSelection = ({ orgId, sessionId }: { orgId: number, sessionId: numb
           </div>
         </div>
       </div>
-
-      <InviteMembers
-        orgId={orgId}
-      />
-    </>
+      <div
+        id="invite-members-drawer"
+        className="fixed top-0 right-0 z-40 h-screen overflow-y-auto transition-transform translate-x-full bg-white w-1/2 dark:bg-gray-800"
+      >
+        <InviteMembers orgId={orgId}/>
+      </div>
+      </>
+    </WithFlowbite>
   )
 }
 
