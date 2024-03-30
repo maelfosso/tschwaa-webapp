@@ -36,7 +36,7 @@ const SetupNewSession = () => {
       // router.push(pathname + '?' + createQueryString('step', (step + 1).toString()))
       navigate({
         pathname,
-        search: `step=${step}`
+        search: `step=${step + 1}`
       });
     }
   }
@@ -45,7 +45,7 @@ const SetupNewSession = () => {
     if (step > 1) {
       navigate({
         pathname,
-        search: `step=${step}`
+        search: `step=${step - 1}`
       });
       // router.push(pathname + '?' + createQueryString('step', (step - 1).toString()))
     }
