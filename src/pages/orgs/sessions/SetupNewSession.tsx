@@ -1,11 +1,11 @@
-import CashInConfiguration from "components/orgs/orgId/sessions/setup/CashInConfiguration";
-import CashOutConfiguration from "components/orgs/orgId/sessions/setup/CashOutConfiguration";
 import MeetingFrequencies from "components/orgs/orgId/sessions/setup/MeetingFrequencies";
 import MeetingPoints from "components/orgs/orgId/sessions/setup/MeetingPoints";
 import MembersSelection from "components/orgs/orgId/sessions/setup/MembersSelection";
 import { classNames } from "lib/utils";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+const MAX_STEPS = 3;
 
 const SetupNewSession = () => {
   const { pathname } = useLocation();
@@ -32,7 +32,7 @@ const SetupNewSession = () => {
 
 
   const handleNextClick = () => {
-    if (step < 5) {
+    if (step < MAX_STEPS) {
       // router.push(pathname + '?' + createQueryString('step', (step + 1).toString()))
       navigate({
         pathname,
@@ -57,8 +57,8 @@ const SetupNewSession = () => {
         return <MembersSelection orgId={orgId} sessionId={sessionId} />
       case 2:
         return <MeetingPoints orgId={orgId} sessionId={sessionId} />
-      // case 3:
-      //   return <MeetingFrequencies orgId={+(orgId ?? "")} />
+      case 3:
+        return <MeetingFrequencies orgId={orgId} sessionId={sessionId} />
       // case 4:
       //   return <CashInConfiguration orgId={+(orgId ?? "")} />
       // case 5:
