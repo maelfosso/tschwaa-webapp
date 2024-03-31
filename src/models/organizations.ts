@@ -44,3 +44,19 @@ export type MemberOfSession = {
   role:     string;
   status:   string;
 }
+
+export type PlaceOfSession = {
+
+}
+
+export type PlaceOfSessionOnline = {
+
+}
+
+export type PlaceOfSessionGivenVenue = {
+
+}
+
+export type PlaceOfSessionMemberHome = {
+  
+}

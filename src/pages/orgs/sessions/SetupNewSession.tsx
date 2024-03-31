@@ -56,7 +56,7 @@ const SetupNewSession = () => {
       case 1:
         return <MembersSelection orgId={orgId} sessionId={sessionId} />
       case 2:
-        return <MeetingPoints orgId={orgId} />
+        return <MeetingPoints orgId={orgId} sessionId={sessionId} />
       // case 3:
       //   return <MeetingFrequencies orgId={+(orgId ?? "")} />
       // case 4:

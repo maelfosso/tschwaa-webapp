@@ -1,23 +1,174 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getPlaceOfSession, updatePlaceOfSession } from "api/session";
 import { classNames } from "lib/utils";
+import { PlaceOfSession } from "models/organizations";
 import { useState } from "react";
+
+
+const MeetingPlaceOnline = () => {
+  return (
+    <div>
+      <div className="block text-sm font-medium leading-6 text-gray-900">More about it</div>
+      <div className="mt-2 relative flex flex-col gap-2 cursor-pointer border p-4 focus:outline-none rounded-md bg-white shadow-sm">
+        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+          Link of meeting
+        </label>
+        <div>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="Google Meet, Zoom, etc..."
+            aria-describedby="email-description"
+          />
+        </div>
+        <p className="text-sm text-gray-500" id="email-description">
+          Kindly, provide the link (Google Meet, Zoom, etc...) where to the meeting will be
+        </p>
+      </div>
+    </div>
+  )
+}
+
+const MeetingPlaceGivenVenue = () => {
+  return (
+    <div>
+      <div className="block text-sm font-medium leading-6 text-gray-900">More about it</div>
+      <div className="mt-2 relative flex flex-col gap-2 cursor-pointer border p-4 focus:outline-none rounded-md bg-white shadow-sm">
+        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+          Kindly, indicate the place on the map and name it
+        </label>
+        <div className="">
+          <input
+            type="email"
+            name="given_venue"
+            id="given_venue"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder=""
+            aria-describedby="email-description"
+          />
+        </div>
+        <p className="text-sm text-gray-500" id="email-description">
+          Kindly, select on the map the place of the meeting. It will be used to guide members.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+const MEETING_PLACES_MEMBER_HOME = {
+  RECEIVER: { type: "receiver", name: "The one who receive", description: "We will be at the home who will receive us the day of the meeting" },
+  SPECIFIED: { type: "specified", name: "Will be specify", description: "We will specify it when the times comes, the day of the meeting" },
+}
+const MeetingPlaceMemberHome = () => {
+  const [choice, setChoice] = useState(MEETING_PLACES_MEMBER_HOME.RECEIVER);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChoice(Object.values(MEETING_PLACES_MEMBER_HOME)[+event.target.value]);
+  }
+
+  return (
+    <div>
+      <div className="block text-sm font-medium leading-6 text-gray-900">Where exactly?</div>
+      <div className="isolate mt-2 -space-y-px rounded-md bg-white shadow-sm">
+        {Object.values(MEETING_PLACES_MEMBER_HOME).map((setting, settingIdx) => (
+          <label
+            key={setting.type}
+            htmlFor={`meeting-place-member-home-${settingIdx}`} 
+            className={
+              classNames(
+                settingIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
+                settingIdx === Object.values(MEETING_PLACES_MEMBER_HOME).length - 1 ? 'rounded-bl-md rounded-br-md' : '',
+                choice.type == setting.type ? 'z-10 border-sky-200 bg-sky-50' : 'border-gray-200',
+                'relative flex cursor-pointer border p-4 focus:outline-none'
+              )
+            }
+          >
+            <span
+              className={classNames(
+                choice.type == setting.type ? 'bg-sky-600 border-transparent' : 'bg-white border-gray-300',
+                'mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded-full border flex items-center justify-center'
+              )}
+              aria-hidden="true"
+            >
+              <input
+                id={`meeting-place-member-home-${settingIdx}`}
+                name="meeting-place-member-home-radio" aria-describedby="helper-radio-text"
+                type="radio"
+                value={settingIdx}
+                checked={choice.type == setting.type}
+                onChange={handleChange}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+            </span>
+            <span className="ml-3 flex flex-col">
+              <span
+                className={classNames(
+                  choice.type == setting.type ? 'text-sky-900' : 'text-gray-900',
+                  'block text-sm font-medium'
+                )}
+              >
+                {setting.name}
+              </span>
+              <span
+                className={classNames(choice.type == setting.type ? 'text-sky-700' : 'text-gray-500', 'block text-sm')}
+              >
+                {setting.description}
+              </span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 interface Props {
   orgId: number;
+  sessionId: number;
 }
 
-const meetingPoints = [
-  { name: 'Online', description: 'This project would be available to anyone who has the link' },
-  { name: 'Given venue', description: 'Only members of this project would be able to access' },
-  { name: 'Member\'s house', description: 'You are the only one able to access this project' },
-]
+const MEETING_PLACES = {
+  ONLINE: { type: "online", name: 'Online', description: 'This project would be available to anyone who has the link' },
+  GIVEN_VENUE: { type: "given_venue", name: 'Given venue', description: 'Only members of this project would be able to access' },
+  MEMBER_HOME: { type: "member_home", name: 'Member\'s house', description: 'You are the only one able to access this project' },
+}
 
-const MeetingPoints = ({ orgId }: Props) => {
+const MeetingPoints = ({ orgId, sessionId }: Props) => {
 
-  const [meetingPoint, setMeetingPoint] = useState(meetingPoints[0]);
+  const [selectedPlaceOfSession, setSelectedPlaceOfSession] = useState(MEETING_PLACES.ONLINE);
+
+  const { data: placeOfSession } = useQuery(getPlaceOfSession(orgId, sessionId))
+  console.log('place of session', placeOfSession);
+
+  const { mutate: mutatePlaceOfSession } = useMutation(updatePlaceOfSession(orgId, sessionId, {
+    onSuccess: (response: PlaceOfSession) => {
+      // setSelectedPlaceOfSession(response);
+      console.log('response: ', response);
+    },
+    onError: (error: Error) => {
+      console.log("update place error: ", error);
+    }
+  }))
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // event.preventDefault();
-    setMeetingPoint(meetingPoints[+event.target.value]);
+    setSelectedPlaceOfSession(Object.values(MEETING_PLACES)[+event.target.value]);
+    // mutatePlaceOfSession({
+    //   type: selectedPlaceOfSession.name
+    // })
+  }
+
+  const renderPlaceDetails = () => {
+    switch(selectedPlaceOfSession.type) {
+      case MEETING_PLACES.ONLINE.type:
+        return <MeetingPlaceOnline />;
+      case MEETING_PLACES.GIVEN_VENUE.type:
+        return <MeetingPlaceGivenVenue />;
+      case MEETING_PLACES.MEMBER_HOME.type:
+        return <MeetingPlaceMemberHome />;
+    }
   }
 
   return (
@@ -34,25 +185,25 @@ const MeetingPoints = ({ orgId }: Props) => {
         </div>
       </div>
       
-      <div>
+      <div className="mb-4">
         <div className="block text-sm font-medium leading-6 text-gray-900">We meet</div>
         <div className="isolate mt-2 -space-y-px rounded-md bg-white shadow-sm">
-          {meetingPoints.map((setting, settingIdx) => (
+          {Object.values(MEETING_PLACES).map((setting, settingIdx) => (
             <label
               key={setting.name}
               htmlFor={`meeting-point-radio-${settingIdx}`} 
               className={
                 classNames(
                   settingIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
-                  settingIdx === meetingPoints.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
-                  meetingPoint.name == setting.name ? 'z-10 border-sky-200 bg-sky-50' : 'border-gray-200',
+                  settingIdx === Object.values(MEETING_PLACES).length - 1 ? 'rounded-bl-md rounded-br-md' : '',
+                  selectedPlaceOfSession.name == setting.name ? 'z-10 border-sky-200 bg-sky-50' : 'border-gray-200',
                   'relative flex cursor-pointer border p-4 focus:outline-none'
                 )
               }
             >
               <span
                 className={classNames(
-                  meetingPoint.name == setting.name ? 'bg-sky-600 border-transparent' : 'bg-white border-gray-300',
+                  selectedPlaceOfSession.name == setting.name ? 'bg-sky-600 border-transparent' : 'bg-white border-gray-300',
                   'mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded-full border flex items-center justify-center'
                 )}
                 aria-hidden="true"
@@ -62,7 +213,7 @@ const MeetingPoints = ({ orgId }: Props) => {
                   name="meeting-points-radio" aria-describedby="helper-radio-text"
                   type="radio"
                   value={settingIdx}
-                  checked={meetingPoint.name == setting.name}
+                  checked={selectedPlaceOfSession.name == setting.name}
                   onChange={handleChange}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
@@ -70,14 +221,14 @@ const MeetingPoints = ({ orgId }: Props) => {
               <span className="ml-3 flex flex-col">
                 <span
                   className={classNames(
-                    meetingPoint.name == setting.name ? 'text-sky-900' : 'text-gray-900',
+                    selectedPlaceOfSession.name == setting.name ? 'text-sky-900' : 'text-gray-900',
                     'block text-sm font-medium'
                   )}
                 >
                   {setting.name}
                 </span>
                 <span
-                  className={classNames(meetingPoint.name == setting.name ? 'text-sky-700' : 'text-gray-500', 'block text-sm')}
+                  className={classNames(selectedPlaceOfSession.name == setting.name ? 'text-sky-700' : 'text-gray-500', 'block text-sm')}
                 >
                   {setting.description}
                 </span>
@@ -86,6 +237,8 @@ const MeetingPoints = ({ orgId }: Props) => {
           ))}
         </div>
       </div>
+
+      { renderPlaceDetails() }
     </>
   )
 }
