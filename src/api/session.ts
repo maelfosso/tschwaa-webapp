@@ -83,3 +83,17 @@ export const updatePlaceOfSession = (orgId: number, sessionId: number, options: 
     ),
   ...options
 });
+
+export type ChangePlaceOfSessionInputs = {
+  placeType: string;
+}
+export const changePlaceOfSession = (orgId: number, sessionId: number, options: UseMutationOptions<PlaceOfSession, Error, ChangePlaceOfSessionInputs>) => ({
+  mutationKey: [ORGS, orgId, SESSIONS, sessionId, PLACES, "POST"],
+  mutationFn: (inputs: ChangePlaceOfSessionInputs) =>
+    fetchApiResponse<PlaceOfSession, ChangePlaceOfSessionInputs>(
+      `${ORGS}/${orgId}/${SESSIONS}/${sessionId}/places`,
+      "POST",
+      inputs
+    ),
+  ...options
+});

@@ -1,11 +1,37 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getPlaceOfSession, updatePlaceOfSession } from "api/session";
+import { changePlaceOfSession, getPlaceOfSession, updatePlaceOfSession } from "api/session";
 import { classNames } from "lib/utils";
-import { PlaceOfSession } from "models/organizations";
-import { useState } from "react";
+import { PlaceOfSession, PlaceOfSessionGivenVenue, PlaceOfSessionMemberHome, PlaceOfSessionOnline } from "models/organizations";
+import { useEffect, useState } from "react";
+
+interface MeetingPlaceDetailsProps {
+  state: {
+    placeDetails: PlaceOfSession,
+    setPlaceDetails: React.Dispatch<React.SetStateAction<PlaceOfSession>>
+  }
+}
 
 
-const MeetingPlaceOnline = () => {
+const MeetingPlaceOnline = ({ state }: MeetingPlaceDetailsProps) => {
+  const { placeDetails, setPlaceDetails } = state;
+
+  useEffect(() => {
+    setPlaceDetails({
+      ...placeDetails,
+      placeType: MEETING_PLACES.ONLINE.type
+    } as PlaceOfSessionOnline)
+  }, []);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+
+    setPlaceDetails({
+      ...placeDetails,
+      type: "whatsapp",
+      link: event.target.value
+    } as PlaceOfSessionOnline)
+  }
+
   return (
     <div>
       <div className="block text-sm font-medium leading-6 text-gray-900">More about it</div>
@@ -15,12 +41,14 @@ const MeetingPlaceOnline = () => {
         </label>
         <div>
           <input
-            type="email"
-            name="email"
-            id="email"
+            type="url"
+            name="link"
+            id="link"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="Google Meet, Zoom, etc..."
-            aria-describedby="email-description"
+            aria-describedby="link-description"
+            onChange={handleChange}
+            value={(placeDetails as PlaceOfSessionOnline).link}
           />
         </div>
         <p className="text-sm text-gray-500" id="email-description">
@@ -31,25 +59,46 @@ const MeetingPlaceOnline = () => {
   )
 }
 
-const MeetingPlaceGivenVenue = () => {
+const MeetingPlaceGivenVenue = ({ state }: MeetingPlaceDetailsProps) => {
+  const { placeDetails, setPlaceDetails } = state;
+
+  useEffect(() => {
+    console.log('mount - given venue: ', placeDetails);
+    setPlaceDetails({
+      ...placeDetails,
+      placeType: MEETING_PLACES.GIVEN_VENUE.type
+    } as PlaceOfSessionGivenVenue)
+  }, []);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+
+    setPlaceDetails({
+      ...placeDetails,
+      name: event.target.value
+    } as PlaceOfSession)
+  }
+
   return (
     <div>
       <div className="block text-sm font-medium leading-6 text-gray-900">More about it</div>
       <div className="mt-2 relative flex flex-col gap-2 cursor-pointer border p-4 focus:outline-none rounded-md bg-white shadow-sm">
-        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+        <label htmlFor="name-given-venue" className="block text-sm font-medium leading-6 text-gray-900">
           Kindly, indicate the place on the map and name it
         </label>
         <div className="">
           <input
-            type="email"
-            name="given_venue"
-            id="given_venue"
+            type="text"
+            name="name"
+            id="name-given-venue"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder=""
-            aria-describedby="email-description"
+            aria-describedby="name-given-venu"
+            onChange={handleChange}
+            value={(placeDetails as PlaceOfSessionGivenVenue).location}
           />
         </div>
-        <p className="text-sm text-gray-500" id="email-description">
+        <p className="text-sm text-gray-500">
           Kindly, select on the map the place of the meeting. It will be used to guide members.
         </p>
       </div>
@@ -61,11 +110,24 @@ const MEETING_PLACES_MEMBER_HOME = {
   RECEIVER: { type: "receiver", name: "The one who receive", description: "We will be at the home who will receive us the day of the meeting" },
   SPECIFIED: { type: "specified", name: "Will be specify", description: "We will specify it when the times comes, the day of the meeting" },
 }
-const MeetingPlaceMemberHome = () => {
+const MeetingPlaceMemberHome = ({ state }: MeetingPlaceDetailsProps) => {
+  const { placeDetails, setPlaceDetails } = state;
   const [choice, setChoice] = useState(MEETING_PLACES_MEMBER_HOME.RECEIVER);
+
+  useEffect(() => {
+    setPlaceDetails({
+      ...placeDetails,
+      placeType: MEETING_PLACES.MEMBER_HOME.type,
+      choice: (placeDetails as PlaceOfSessionMemberHome).choice ?? MEETING_PLACES_MEMBER_HOME.RECEIVER.type
+    } as PlaceOfSessionMemberHome)
+  }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChoice(Object.values(MEETING_PLACES_MEMBER_HOME)[+event.target.value]);
+    setPlaceDetails({
+      ...placeDetails,
+      choice: Object.values(MEETING_PLACES_MEMBER_HOME)[+event.target.value].type
+    } as PlaceOfSessionMemberHome)
   }
 
   return (
@@ -138,11 +200,21 @@ const MEETING_PLACES = {
 const MeetingPoints = ({ orgId, sessionId }: Props) => {
 
   const [selectedPlaceOfSession, setSelectedPlaceOfSession] = useState(MEETING_PLACES.ONLINE);
+  const [placeDetails, setPlaceDetails] = useState<PlaceOfSession>({
+    id: -1,
+    placeType: MEETING_PLACES.ONLINE.type,
+    sessionId: sessionId
+  })
 
   const { data: placeOfSession } = useQuery(getPlaceOfSession(orgId, sessionId))
   console.log('place of session', placeOfSession);
 
-  const { mutate: mutatePlaceOfSession } = useMutation(updatePlaceOfSession(orgId, sessionId, {
+  useEffect(() => {
+    console.log('placedetails: ', placeDetails);
+    // mutatePlaceOfSession(placeDetails);
+  }, [placeDetails])
+
+  const { mutate: mutatePlaceOfSession } = useMutation(changePlaceOfSession(orgId, sessionId, {
     onSuccess: (response: PlaceOfSession) => {
       // setSelectedPlaceOfSession(response);
       console.log('response: ', response);
@@ -150,24 +222,22 @@ const MeetingPoints = ({ orgId, sessionId }: Props) => {
     onError: (error: Error) => {
       console.log("update place error: ", error);
     }
-  }))
+  }));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // event.preventDefault();
-    setSelectedPlaceOfSession(Object.values(MEETING_PLACES)[+event.target.value]);
-    // mutatePlaceOfSession({
-    //   type: selectedPlaceOfSession.name
-    // })
+    const tmp = Object.values(MEETING_PLACES)[+event.target.value];
+
+    setSelectedPlaceOfSession(tmp);
   }
 
   const renderPlaceDetails = () => {
     switch(selectedPlaceOfSession.type) {
       case MEETING_PLACES.ONLINE.type:
-        return <MeetingPlaceOnline />;
+        return <MeetingPlaceOnline state={{placeDetails, setPlaceDetails}}/>;
       case MEETING_PLACES.GIVEN_VENUE.type:
-        return <MeetingPlaceGivenVenue />;
+        return <MeetingPlaceGivenVenue state={{placeDetails, setPlaceDetails}} />;
       case MEETING_PLACES.MEMBER_HOME.type:
-        return <MeetingPlaceMemberHome />;
+        return <MeetingPlaceMemberHome state={{placeDetails, setPlaceDetails}} />;
     }
   }
 
