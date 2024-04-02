@@ -63,7 +63,7 @@ export const removeMembersFromSession = (orgId: number, sessionId: number, optio
   ...options
 });
 
-export const getPlaceOfSession = (orgId: number, sessionId: number, options: QueryObserverOptions<PlaceOfSession, Error, void> = {}) => ({
+export const getPlaceOfSession = (orgId: number, sessionId: number, options: QueryObserverOptions<PlaceOfSession, Error, PlaceOfSession> = {}) => ({
   queryKey: [ORGS, orgId, SESSIONS, sessionId, PLACES, "GET"],
   queryFn: async () =>
     fetchApiResponse<PlaceOfSession>(`${ORGS}/${orgId}/${SESSIONS}/${sessionId}/places`, "GET"),

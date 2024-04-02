@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { changePlaceOfSession, getPlaceOfSession, updatePlaceOfSession } from "api/session";
+import { fetchApiResponse } from "api/axios";
+import { ORGS } from "api/organizations";
+import { PLACES, SESSIONS, changePlaceOfSession, getPlaceOfSession, updatePlaceOfSession } from "api/session";
 import { classNames } from "lib/utils";
 import { PlaceOfSession, PlaceOfSessionGivenVenue, PlaceOfSessionMemberHome, PlaceOfSessionOnline } from "models/organizations";
 import { useEffect, useState } from "react";
@@ -206,8 +208,14 @@ const MeetingPoints = ({ orgId, sessionId }: Props) => {
     sessionId: sessionId
   })
 
-  const { data: placeOfSession } = useQuery(getPlaceOfSession(orgId, sessionId))
-  console.log('place of session', placeOfSession);
+  const { data: currentPlaceOfSession } = useQuery(getPlaceOfSession(orgId, sessionId))
+
+  useEffect(() => {
+    setSelectedPlaceOfSession(
+      Object.values(MEETING_PLACES).find((p) => p.type === currentPlaceOfSession?.placeType)
+      || MEETING_PLACES.ONLINE
+    )
+  }, [currentPlaceOfSession])
 
   useEffect(() => {
     console.log('placedetails: ', placeDetails);
