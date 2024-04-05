@@ -11,12 +11,19 @@ export default defineConfig({
     alias: {
       src: "/src",
       components: "/src/components",
+      models: "/src/models",
+      utils: "/src/utils",
       assets: "/src/assets",
       lib: "/src/lib",
       pages: "/src/pages",
       contexts: "/src/contexts",
       hooks: "/src/hooks",
       api: "/src/api"
+    }
+  },
+  server: {
+    fs: {
+      cachedChecks: false
     }
   }
 })
