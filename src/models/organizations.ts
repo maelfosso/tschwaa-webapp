@@ -44,3 +44,25 @@ export type MemberOfSession = {
   role:     string;
   status:   string;
 }
+
+export interface PlaceOfSession {
+  id: number;
+  placeType: string;
+  sessionId: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface PlaceOfSessionOnline extends PlaceOfSession {
+  type: string; // telegram, whatsapp, google_meet, zoom
+  link: string;
+}
+
+export interface PlaceOfSessionGivenVenue extends PlaceOfSession {
+  name: string;
+  location: string;
+}
+
+export interface PlaceOfSessionMemberHome extends PlaceOfSession {
+  choice: string;
+}
